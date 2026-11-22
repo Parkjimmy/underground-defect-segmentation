@@ -31,7 +31,9 @@
   * 학습셋 총 5,503개 인스턴스의 클래스별 분포는 `crack` 1,050개(19.1%), `efflorescence` 1,783개(32.4%), `spall_detach` 2,670개(48.5%)로 구성되어 `crack` 대비 `spall_detach` 표본이 약 2.5배 많은 불균형 특성을 보인다. 바운딩 박스 중심 좌표는 영상 전반에 고르게 분포하나, 객체 크기(width, height)는 전체 영상 대비 0.2~0.4 비율의 중소형 객체에 집중되어 있다.
   * 최종 성능 평가에 사용된 테스트셋(40장)은 총 47개 인스턴스(`crack` 14개, `efflorescence` 19개, `spall_detach` 14개)로 구성된다.
 
-![labels](https://github.com/user-attachments/assets/0e544261-1339-43f1-8a9c-c1fb4fc79795)
+<p align="center">
+  <img width="1600" height="1600" alt="labels" src="https://github.com/user-attachments/assets/0e544261-1339-43f1-8a9c-c1fb4fc79795" />
+</p>
 
 * 전처리 및 데이터 누수(Data Leakage) 차단:
   * YOLO Segmentation 포맷 변환: LabelMe JSON 폴리곤 좌표를 영상 너비·높이 기준 정규화 좌표(`[0.0, 1.0]`)로 변환하여 `[class_id x1 y1 x2 y2 ...]` 형태의 `.txt` 라벨을 생성한다.
@@ -49,7 +51,9 @@
   * COCO 사전학습 가중치(`yolov8s-seg.pt`)를 초기값으로 불러와 `imgsz=640`, `batch=16`, 옵티마이저 `AdamW` 설정으로 약 60 에폭 동안 미세조정(Fine-tuning)을 수행한다.
   * 학습 곡선(`results.png`) 분석 결과, 학습 손실(`train/box_loss`, `train/seg_loss`, `train/cls_loss`, `train/dfl_loss`)은 60 에폭까지 단조 감소하였으며, 검증셋 마스크 `mAP50(M)`은 초기 0.32 수준에서 꾸준히 상승하여 후반부 약 0.65 수준에 수렴한다. 학습 손실의 단순 감소가 아닌 검증셋(Val) 종합 성능 기준 최고 에폭의 가중치(`best.pt`)를 최종 평가 모델로 선택한다.
 
-![results](https://github.com/user-attachments/assets/cee45e84-b1e6-43ae-bdfe-f45ce7764be5)
+<p align="center">
+  <img width="1600" height="1600" alt="labels" src="https://github.com/user-attachments/assets/0e544261-1339-43f1-8a9c-c1fb4fc79795" />
+</p>
 
 * 이원화 평가 및 임계값 설계 (`val` → `test`):
   * 1축 — 픽셀/마스크 단위 분할 평가 (`mask mAP`): 테스트셋(40장, 47개 인스턴스)을 대상으로 예측 마스크와 정답 마스크의 겹침 정도(IoU)를 기반으로 `mask mAP50` 및 엄격한 경계 일치도 지표인 `mask mAP50-95`를 산출한다.
