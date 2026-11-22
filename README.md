@@ -6,6 +6,7 @@
 
 * 작성자: 20117251 박지민
 * 실행 환경: Windows OS / NVIDIA GeForce RTX 4060 Ti (8GB) / Python 3.12.10 / PyTorch 2.5.1+cu121 / Ultralytics 8.4.207
+<img width="1600" height="1600" alt="labels" src="https://github.com/user-attachments/assets/69fc5f73-b4a9-4af0-b14f-b69c458c772b" />
 
 ---
 
@@ -31,7 +32,7 @@
   * 학습셋 총 5,503개 인스턴스의 클래스별 분포는 `crack` 1,050개(19.1%), `efflorescence` 1,783개(32.4%), `spall_detach` 2,670개(48.5%)로 구성되어 `crack` 대비 `spall_detach` 표본이 약 2.5배 많은 불균형 특성을 보인다. 바운딩 박스 중심 좌표는 영상 전반에 고르게 분포하나, 객체 크기(width, height)는 전체 영상 대비 0.2~0.4 비율의 중소형 객체에 집중되어 있다.
   * 최종 성능 평가에 사용된 테스트셋(40장)은 총 47개 인스턴스(`crack` 14개, `efflorescence` 19개, `spall_detach` 14개)로 구성된다.
 
-(※ 이 위치에 `labels.jpg` 이미지를 삽입한다.)
+<img width="1600" height="1600" alt="labels" src="https://github.com/user-attachments/assets/0e544261-1339-43f1-8a9c-c1fb4fc79795" />
 
 * 전처리 및 데이터 누수(Data Leakage) 차단:
   * YOLO Segmentation 포맷 변환: LabelMe JSON 폴리곤 좌표를 영상 너비·높이 기준 정규화 좌표(`[0.0, 1.0]`)로 변환하여 `[class_id x1 y1 x2 y2 ...]` 형태의 `.txt` 라벨을 생성한다.
@@ -49,7 +50,7 @@
   * COCO 사전학습 가중치(`yolov8s-seg.pt`)를 초기값으로 불러와 `imgsz=640`, `batch=16`, 옵티마이저 `AdamW` 설정으로 약 60 에폭 동안 미세조정(Fine-tuning)을 수행한다.
   * 학습 곡선(`results.png`) 분석 결과, 학습 손실(`train/box_loss`, `train/seg_loss`, `train/cls_loss`, `train/dfl_loss`)은 60 에폭까지 단조 감소하였으며, 검증셋 마스크 `mAP50(M)`은 초기 0.32 수준에서 꾸준히 상승하여 후반부 약 0.65 수준에 수렴한다. 학습 손실의 단순 감소가 아닌 검증셋(Val) 종합 성능 기준 최고 에폭의 가중치(`best.pt`)를 최종 평가 모델로 선택한다.
 
-(※ 이 위치에 `results.png` 이미지를 삽입한다.)
+<img width="1600" height="1600" alt="labels" src="https://github.com/user-attachments/assets/05ba3a2d-0f09-44f5-acd0-2056e375697f" />
 
 * 이원화 평가 및 임계값 설계 (`val` → `test`):
   * 1축 — 픽셀/마스크 단위 분할 평가 (`mask mAP`): 테스트셋(40장, 47개 인스턴스)을 대상으로 예측 마스크와 정답 마스크의 겹침 정도(IoU)를 기반으로 `mask mAP50` 및 엄격한 경계 일치도 지표인 `mask mAP50-95`를 산출한다.
@@ -108,7 +109,8 @@ python run_week3.py
 | `efflorescence` (백태) | 13 | 19 | 0.681 | 0.526 | 0.535 | 0.347 | 0.5634 | 0.2470 |
 | `spall_detach` (박리·박락) | 14 | 14 | 0.761 | 0.857 | 0.872 | 0.495 | 0.8717 | 0.4673 |
 
-(※ 이 위치에 `MaskF1_curve.png` 및 `MaskPR_curve.png` 이미지를 삽입한다.)
+<img width="2250" height="1500" alt="MaskF1_curve" src="https://github.com/user-attachments/assets/6545dc79-da62-4332-8ccb-3f004e8c1104" />
+<img width="2250" height="1500" alt="MaskPR_curve" src="https://github.com/user-attachments/assets/4d8f6a7d-67cb-4d51-8500-a3865bc7d74d" />
 
 * 세그멘테이션 성능 해석:
 * `spall_detach`는 학습 표본이 가장 풍부(2,670개)하고 표면 요철과 단차가 뚜렷하여 `mask mAP50` 0.8717(`mAP50-95` 0.4673)의 우수한 분할 정확도를 달성한다.
@@ -123,7 +125,8 @@ python run_week3.py
 
 검증셋(Val)을 대상으로 임계값(`0.001 ~ 0.3`) 변화에 따른 이미지 단위 `ON/OFF` F1-score를 탐색한 결과(`val_threshold_f1.png`), 세 결함의 신뢰도 분포가 상이하여 클래스별로 서로 다른 최적 임계값이 도출된다.
 
-(※ 이 위치에 `val_threshold_f1.png` 이미지를 삽입한다.)
+<img width="1200" height="750" alt="val_threshold_f1" src="https://github.com/user-attachments/assets/a5a71d94-bca9-407f-98dc-d444a3354358" />
+
 
 | 클래스 | 선택된 최적 임계값 | 검증셋 최고 F1-score (Val F1) | 선택 근거 |
 | --- | --- | --- | --- |
@@ -162,7 +165,11 @@ python run_week3.py
 
 ## 3. Confusion Matrix 및 오류 사례 심층 분석
 
-(※ 이 위치에 `confusion_matrix.png`, `confusion_matrix_normalized.png`, `val_batch0_pred.jpg`, `val_batch2_pred.jpg` 이미지를 삽입한다.)
+<img width="3000" height="2250" alt="confusion_matrix" src="https://github.com/user-attachments/assets/db0c927f-0a23-448e-b845-fb6a9593a09d" />
+<img width="3000" height="2250" alt="confusion_matrix_normalized" src="https://github.com/user-attachments/assets/ded0131d-74e6-421a-bb55-3518f5d13d82" />
+<img width="1920" height="1116" alt="val_batch0_pred" src="https://github.com/user-attachments/assets/9999444e-97fe-4f3e-9929-efadfd0dcdbb" />
+<img width="1920" height="1116" alt="val_batch2_pred" src="https://github.com/user-attachments/assets/fc845325-1e06-4de0-ad78-81003416aa06" />
+
 
 ### 3.1 평가 단위에 따른 Confusion Matrix 비교 (인스턴스 단위 vs 이미지 단위 ON/OFF)
 
