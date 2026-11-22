@@ -52,7 +52,7 @@
   * 학습 곡선(`results.png`) 분석 결과, 학습 손실(`train/box_loss`, `train/seg_loss`, `train/cls_loss`, `train/dfl_loss`)은 60 에폭까지 단조 감소하였으며, 검증셋 마스크 `mAP50(M)`은 초기 0.32 수준에서 꾸준히 상승하여 후반부 약 0.65 수준에 수렴한다. 학습 손실의 단순 감소가 아닌 검증셋(Val) 종합 성능 기준 최고 에폭의 가중치(`best.pt`)를 최종 평가 모델로 선택한다.
 
 <p align="center">
-  <img width="1600" height="1600" alt="labels" src="https://github.com/user-attachments/assets/0e544261-1339-43f1-8a9c-c1fb4fc79795" />
+  <img width="4000" height="1200" alt="results" src="https://github.com/user-attachments/assets/cee45e84-b1e6-43ae-bdfe-f45ce7764be5" />
 </p>
 
 * 이원화 평가 및 임계값 설계 (`val` → `test`):
