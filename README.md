@@ -1,5 +1,4 @@
 
-```markdown
 # 지하 콘크리트 구조물 다중 표면 결함 탐지 및 클래스별 임계값 설계 (YOLOv8s-Seg)
 
 본 프로젝트는 터널·공동구·지하차도 등 지하 콘크리트 구조물 표면에서 발생하는 3가지 주요 열화 결함(균열 `crack`, 백태 `efflorescence`, 박리·박락 `spall_detach`)을 폴리곤 기반 인스턴스 세그멘테이션(Instance Segmentation)으로 분할하고, 검증셋(Validation set) 기반 클래스별 최적 신뢰도 임계값(Confidence Threshold) 설계를 통해 실무 현장 영상 선별(`ON/OFF`) 성능을 극대화한 연구 및 실습 구현물이다.
