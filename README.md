@@ -6,7 +6,6 @@
 
 * 작성자: 20117251 박지민
 * 실행 환경: Windows OS / NVIDIA GeForce RTX 4060 Ti (8GB) / Python 3.12.10 / PyTorch 2.5.1+cu121 / Ultralytics 8.4.207
-<img width="1600" height="1600" alt="labels" src="https://github.com/user-attachments/assets/69fc5f73-b4a9-4af0-b14f-b69c458c772b" />
 
 ---
 
@@ -50,7 +49,7 @@
   * COCO 사전학습 가중치(`yolov8s-seg.pt`)를 초기값으로 불러와 `imgsz=640`, `batch=16`, 옵티마이저 `AdamW` 설정으로 약 60 에폭 동안 미세조정(Fine-tuning)을 수행한다.
   * 학습 곡선(`results.png`) 분석 결과, 학습 손실(`train/box_loss`, `train/seg_loss`, `train/cls_loss`, `train/dfl_loss`)은 60 에폭까지 단조 감소하였으며, 검증셋 마스크 `mAP50(M)`은 초기 0.32 수준에서 꾸준히 상승하여 후반부 약 0.65 수준에 수렴한다. 학습 손실의 단순 감소가 아닌 검증셋(Val) 종합 성능 기준 최고 에폭의 가중치(`best.pt`)를 최종 평가 모델로 선택한다.
 
-<img width="1600" height="1600" alt="labels" src="https://github.com/user-attachments/assets/05ba3a2d-0f09-44f5-acd0-2056e375697f" />
+<img width="4000" height="1200" alt="results" src="https://github.com/user-attachments/assets/cee45e84-b1e6-43ae-bdfe-f45ce7764be5" />
 
 * 이원화 평가 및 임계값 설계 (`val` → `test`):
   * 1축 — 픽셀/마스크 단위 분할 평가 (`mask mAP`): 테스트셋(40장, 47개 인스턴스)을 대상으로 예측 마스크와 정답 마스크의 겹침 정도(IoU)를 기반으로 `mask mAP50` 및 엄격한 경계 일치도 지표인 `mask mAP50-95`를 산출한다.
